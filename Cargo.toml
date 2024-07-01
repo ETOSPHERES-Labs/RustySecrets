@@ -26,7 +26,7 @@ default = ["dss"]
 dss     = []
 
 [dependencies]
-base64      = "0.12"
+base64      = "0.22"
 rand        = "0.8"
 ring = "0.17.8"
 merkle_sigs = { git = "https://github.com/antbern/merkle_sigs.rs" }

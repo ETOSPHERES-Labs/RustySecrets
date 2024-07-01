@@ -25,7 +25,8 @@ fn test_reasonable_splits() {
                     &secret,
                     Some(mime_type.clone()),
                     *is_signing,
-                ).unwrap();
+                )
+                .unwrap();
                 println!("Testing {} out-of- {}", k, n);
 
                 let s = wrapped_secrets::recover_secret(&shares, *is_signing).unwrap();

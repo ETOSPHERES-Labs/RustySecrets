@@ -118,5 +118,4 @@ mod tests {
         assert_eq!(access.shares_count, 10);
         assert_eq!(None, metadata);
     }
-
 }
