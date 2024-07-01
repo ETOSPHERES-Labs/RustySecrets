@@ -39,7 +39,7 @@ default-features = false
 
 [dev-dependencies]
 itertools  = "0.13"
-quickcheck = "0.9"
+quickcheck = "1"
 flate2     = "1"
 
 [profile.bench]

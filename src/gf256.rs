@@ -225,7 +225,7 @@ mod tests {
     }
 
     impl Arbitrary for Gf256 {
-        fn arbitrary<G: Gen>(gen: &mut G) -> Gf256 {
+        fn arbitrary(gen: &mut Gen) -> Gf256 {
             Gf256::from_byte(u8::arbitrary(gen))
         }
     }
