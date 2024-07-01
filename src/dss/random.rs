@@ -1,6 +1,4 @@
-use std;
-
-use errors::*;
+use crate::errors::*;
 
 use ring::error::Unspecified;
 use ring::rand::SecureRandom;
@@ -11,6 +9,21 @@ use ring::rand::SecureRandom;
 pub(crate) const MAX_MESSAGE_SIZE: usize = std::usize::MAX / (std::u8::MAX - 1) as usize;
 /// Minimum allowed message size in bytes
 pub(crate) static MIN_MESSAGE_SIZE: usize = 1;
+
+/// Trait needed to go arround the fact that we cannot implement [`ring::rand::SecureRandom`] since
+/// it is Sealed.
+pub(crate) trait MySecureRandom {
+    /// Fills `dest` with random bytes.
+    fn fill(&self, dest: &mut [u8]) -> core::result::Result<(), Unspecified>;
+}
+impl<T> MySecureRandom for T
+where
+    T: SecureRandom,
+{
+    fn fill(&self, dest: &mut [u8]) -> core::result::Result<(), Unspecified> {
+        <Self as SecureRandom>::fill(&self, dest)
+    }
+}
 
 /// Returns the number of random bytes to read from the secure random number generator.
 /// As defined in section 3.1 of the 'New Directions in Secret Sharing' paper.
@@ -23,7 +36,7 @@ pub(crate) fn random_bytes_count(threshold: u8, message_size: usize) -> usize {
 }
 
 /// Attempts to read `count` random bytes from the given secure random generator.
-pub(crate) fn random_bytes(random: &SecureRandom, count: usize) -> Result<Vec<u8>> {
+pub(crate) fn random_bytes(random: &dyn MySecureRandom, count: usize) -> Result<Vec<u8>> {
     if count == 0 {
         return Ok(Vec::new());
     }
@@ -31,7 +44,7 @@ pub(crate) fn random_bytes(random: &SecureRandom, count: usize) -> Result<Vec<u8
     let mut rl = vec![0; count];
     random
         .fill(&mut rl)
-        .chain_err(|| ErrorKind::CannotGenerateRandomNumbers)?;
+        .map_err(|_| ErrorKind::CannotGenerateRandomNumbers)?;
 
     Ok(rl)
 }
@@ -53,7 +66,7 @@ impl FixedRandom {
     }
 }
 
-impl SecureRandom for FixedRandom {
+impl MySecureRandom for FixedRandom {
     fn fill(&self, dst: &mut [u8]) -> std::result::Result<(), Unspecified> {
         if dst.len() > self.src.len() {
             return Err(Unspecified);

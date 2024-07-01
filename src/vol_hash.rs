@@ -1,4 +1,3 @@
-use std;
 use std::mem::transmute;
 
 use ring::digest::{Algorithm, Context};
@@ -36,7 +35,7 @@ impl VOLHash {
 
         let mut state = ctx.finish().as_ref().to_vec();
 
-        let iter_num = len / self.algorithm.output_len;
+        let iter_num = len / self.algorithm.output_len();
 
         for i in 0..iter_num {
             let mut inner_ctx = Context::new(self.algorithm);

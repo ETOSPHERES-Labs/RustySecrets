@@ -1,30 +1,29 @@
-use std::error::Error;
-
-use base64;
+use base64::Engine;
 use protobuf::{self, Message};
 
-use errors::*;
-use proto::dss::ShareProto;
+use crate::errors::*;
+use crate::proto::dss::ShareProto;
 
-const BASE64_CONFIG: base64::Config = base64::STANDARD_NO_PAD;
+const BASE64_CONFIG: base64::engine::general_purpose::GeneralPurpose =
+    base64::engine::general_purpose::STANDARD_NO_PAD;
 
 pub(crate) fn format_share_protobuf(share: &ShareProto) -> String {
     let bytes = share.write_to_bytes().unwrap();
-    let base64_data = base64::encode_config(&bytes, BASE64_CONFIG);
+    let base64_data = BASE64_CONFIG.encode(&bytes);
     format!("{}-{}-{}", share.threshold, share.id, base64_data)
 }
 
 pub(crate) fn parse_share_protobuf(raw: &str) -> Result<ShareProto> {
     let (threshold, id, base64_data) = parse_raw_share(raw)?;
 
-    let data = base64::decode_config(&base64_data, BASE64_CONFIG).chain_err(|| {
+    let data = BASE64_CONFIG.decode(&base64_data).chain_err(|| {
         ErrorKind::ShareParsingError("Base64 decoding of data block failed".to_string())
     })?;
 
     let share_proto = protobuf::parse_from_bytes::<ShareProto>(data.as_slice()).map_err(|e| {
         ErrorKind::ShareParsingError(format!(
             "Protobuf decoding of data block failed with error: {} .",
-            e.description()
+            e
         ))
     })?;
 

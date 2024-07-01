@@ -1,12 +1,13 @@
-use base64;
-use errors::*;
-use merkle_sigs::{MerklePublicKey, Proof, PublicKey};
-use proto::wrapped::ShareProto;
-use protobuf::{self, Message, RepeatedField};
-use sss::{Share, HASH_ALGO};
-use std::error::Error;
+use crate::errors::*;
+use crate::proto::wrapped::ShareProto;
+use crate::sss::{Share, HASH_ALGO};
 
-const BASE64_CONFIG: base64::Config = base64::STANDARD_NO_PAD;
+use base64::Engine;
+use merkle_sigs::{MerklePublicKey, Proof, PublicKey};
+use protobuf::{self, Message, RepeatedField};
+
+const BASE64_CONFIG: base64::engine::general_purpose::GeneralPurpose =
+    base64::engine::general_purpose::STANDARD_NO_PAD;
 
 pub(crate) fn share_to_string(
     share: Vec<u8>,
@@ -17,14 +18,13 @@ pub(crate) fn share_to_string(
     let mut share_protobuf = ShareProto::new();
     share_protobuf.set_shamir_data(share);
 
-    if signature_pair.is_some() {
-        let (signature, proof) = signature_pair.unwrap();
+    if let Some((signature, proof)) = signature_pair {
         share_protobuf.set_signature(RepeatedField::from_vec(signature));
         share_protobuf.set_proof(proof.write_to_bytes().unwrap());
     }
 
     let proto_buf = share_protobuf.write_to_bytes().unwrap();
-    let b64_share = base64::encode_config(&proto_buf, BASE64_CONFIG);
+    let b64_share = BASE64_CONFIG.encode(&proto_buf);
     format!("{}-{}-{}", threshold, share_num, b64_share)
 }
 
@@ -57,7 +57,7 @@ pub(crate) fn share_from_string(s: &str, is_signed: bool) -> Result<Share> {
         bail!(ErrorKind::ShareParsingErrorEmptyShare(i))
     }
 
-    let raw_data = base64::decode_config(p3, BASE64_CONFIG).chain_err(|| {
+    let raw_data = BASE64_CONFIG.decode(p3).chain_err(|| {
         ErrorKind::ShareParsingError("Base64 decoding of data block failed".to_owned())
     })?;
 
@@ -65,7 +65,7 @@ pub(crate) fn share_from_string(s: &str, is_signed: bool) -> Result<Share> {
         protobuf::parse_from_bytes::<ShareProto>(raw_data.as_slice()).map_err(|e| {
             ErrorKind::ShareParsingError(format!(
                 "Protobuf decoding of data block failed with error: {} .",
-                e.description()
+                e
             ))
         })?;
 
@@ -99,6 +99,6 @@ pub(crate) fn share_from_string(s: &str, is_signed: bool) -> Result<Share> {
 }
 
 pub(crate) fn format_share_for_signing(k: u8, i: u8, data: &[u8]) -> Vec<u8> {
-    let b64_data = base64::encode_config(data, BASE64_CONFIG);
+    let b64_data = BASE64_CONFIG.encode(data);
     format!("{}-{}-{}", k, i, b64_data).into_bytes()
 }
