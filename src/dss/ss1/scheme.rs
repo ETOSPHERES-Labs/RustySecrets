@@ -3,8 +3,8 @@ use std::collections::HashSet;
 use rand::{RngCore, SeedableRng};
 use rand_chacha::ChaCha20Rng;
 use ring::digest::{Context, SHA256};
+use ring::hkdf;
 use ring::rand::{SecureRandom, SystemRandom};
-use ring::{hkdf, hmac};
 
 use super::share::*;
 use crate::dss::random::{random_bytes_count, FixedRandom, MAX_MESSAGE_SIZE};
@@ -193,7 +193,7 @@ impl SS1 {
                 let rng = SystemRandom::new();
                 let mut result = vec![0u8; self.random_padding_len];
                 rng.fill(&mut result)
-                    .chain_err(|| ErrorKind::CannotGenerateRandomNumbers)?;
+                    .map_err(|_| ErrorKind::CannotGenerateRandomNumbers)?;
                 Ok(result)
             }
             Reproducibility::Reproducible => {
@@ -231,9 +231,14 @@ impl SS1 {
         }
         let preseed_hash = ctx.finish();
 
-        let salt = hmac::SigningKey::new(&SHA256, &[]);
+        // let salt = hmac::Key::new(hmac::HMAC_SHA256, &[]);
+        let salt = hkdf::Salt::new(hkdf::HKDF_SHA256, &[]);
+
+        let prk = salt.extract(preseed_hash.as_ref());
+        let out = prk.expand(&[], hkdf::HKDF_SHA256).unwrap();
+
         let mut seed_bytes = [0u8; 32];
-        hkdf::extract_and_expand(&salt, preseed_hash.as_ref(), &[], &mut seed_bytes);
+        out.fill(&mut seed_bytes).unwrap();
         seed_bytes
     }
 

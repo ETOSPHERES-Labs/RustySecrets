@@ -2,9 +2,9 @@
 
 use std::fmt;
 
-use ring::rand::{SecureRandom, SystemRandom};
+use ring::rand::SystemRandom;
 
-use crate::dss::random::{random_bytes, random_bytes_count, MAX_MESSAGE_SIZE};
+use crate::dss::random::{random_bytes, random_bytes_count, MySecureRandom, MAX_MESSAGE_SIZE};
 use crate::errors::*;
 use crate::gf256::Gf256;
 use crate::lagrange;
@@ -23,7 +23,7 @@ const MAX_SECRET_SIZE: usize = MAX_MESSAGE_SIZE;
 #[allow(missing_debug_implementations)]
 pub(crate) struct ThSS {
     /// The randomness source
-    random: Box<dyn SecureRandom>,
+    random: Box<dyn MySecureRandom>,
 }
 
 impl fmt::Debug for ThSS {
@@ -40,7 +40,7 @@ impl Default for ThSS {
 
 impl ThSS {
     /// Constructs a new sharing scheme
-    pub fn new(random: Box<dyn SecureRandom>) -> Self {
+    pub fn new(random: Box<dyn MySecureRandom>) -> Self {
         Self { random }
     }
 
