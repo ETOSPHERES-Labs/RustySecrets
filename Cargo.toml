@@ -27,11 +27,11 @@ dss     = []
 
 [dependencies]
 base64      = "0.12"
-rand        = "0.7"
+rand        = "0.8"
 ring        = "0.12"
 merkle_sigs = "1.4"
 protobuf    = ">= 1.4, < 1.6"
-rand_chacha = "0.2.2"
+rand_chacha = "0.3"
 
 [dependencies.error-chain]
 version          = "0.12.0"
