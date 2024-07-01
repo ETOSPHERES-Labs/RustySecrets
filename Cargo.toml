@@ -14,7 +14,7 @@ homepage    = "https://github.com/freedomofpress/RustySecrets"
 license     = "BSD-3-Clause"
 readme      = "README.md"
 build       = "build.rs"
-edition     = "2018"
+edition     = "2021"
 exclude     = ["Cargo.lock"]
 
 [badges]
