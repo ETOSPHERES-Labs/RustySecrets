@@ -200,14 +200,13 @@ mod tests {
             ($id:ident, $op:expr, $val:expr, $y:expr) => {
                 #[test]
                 fn $id() {
-                    let results = (0..256).cartesian_product($y..256).map(|(i, j)| {
-                        let (i, j) = (Gf256::from_byte(i as u8), Gf256::from_byte(j as u8));
+                    let results = (0..=255).cartesian_product($y..=255).map(|(i, j)| {
+                        let (i, j) = (Gf256::from_byte(i as u8), Gf256::from_byte(j));
                         (i.to_byte(), j.to_byte(), $val(i, j).to_byte())
                     });
 
                     let ref_path = format!("tests/fixtures/gf256/gf256_{}.txt.gz", stringify!($id));
-                    let reference =
-                        BufReader::new(GzDecoder::new(File::open(ref_path).unwrap()).unwrap());
+                    let reference = BufReader::new(GzDecoder::new(File::open(ref_path).unwrap()));
 
                     for ((i, j, k), line) in results.zip(reference.lines()) {
                         let left = format!("{} {} {} = {}", i, $op, j, k);
