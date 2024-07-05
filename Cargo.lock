@@ -167,7 +167,7 @@ name = "merkle"
 version = "1.11.1-pre"
 source = "git+https://github.com/antbern/merkle.rs#567c8c3bfd8be23131ecc7ce22c48ba861a64692"
 dependencies = [
- "protobuf 2.28.0",
+ "protobuf",
  "protoc-rust",
  "ring",
 ]
@@ -205,12 +205,6 @@ checksum = "5b40af805b3121feab8a3c29f04d8ad262fa8e0561883e7653e024ae4479e6de"
 
 [[package]]
 name = "protobuf"
-version = "1.7.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e14ccd6b79ec748412d4f2dfde1a80fa363a67def4062969f8aed3d790a30f28"
-
-[[package]]
-name = "protobuf"
 version = "2.28.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "106dd99e98437432fed6519dedecfade6a06a73bb7b2a1e019fdd2bee5778d94"
@@ -221,7 +215,7 @@ version = "2.28.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "033460afb75cf755fcfc16dfaed20b86468082a2ea24e05ac35ab4a099a017d6"
 dependencies = [
- "protobuf 2.28.0",
+ "protobuf",
 ]
 
 [[package]]
@@ -240,7 +234,7 @@ version = "2.28.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "22f8a182bb17c485f20bdc4274a8c39000a61024cfe461c799b50fec77267838"
 dependencies = [
- "protobuf 2.28.0",
+ "protobuf",
  "protobuf-codegen",
  "protoc",
  "tempfile",
@@ -353,7 +347,8 @@ dependencies = [
  "flate2",
  "itertools",
  "merkle_sigs",
- "protobuf 1.7.5",
+ "protobuf",
+ "protoc-rust",
  "quickcheck",
  "rand",
  "rand_chacha",

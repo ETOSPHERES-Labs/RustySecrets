@@ -69,8 +69,18 @@ impl fmt::Display for Tables {
     }
 }
 
-#[allow(unused_must_use)]
-fn main() {
+fn build_protobuf<'a>(out_dir: &'a str, input: &'a [&'a str], includes: &'a [&'a str]) {
+    use protoc_rust::{run, Args, Customize};
+    run(Args {
+        out_dir,
+        input,
+        includes,
+        customize: Customize::default(),
+    })
+    .expect(&format!("protoc error: out_dir={out_dir}, input={input:?}"));
+}
+
+fn generate_gf256_table() {
     let out_dir = env::var("OUT_DIR").unwrap();
     let dest = Path::new(&out_dir).join("nothinghardcoded.rs");
 
@@ -84,7 +94,31 @@ fn main() {
          }} \
          \
          pub static TABLES: Tables = "
-    );
+    )
+    .unwrap();
 
     generate_tables(&f);
+}
+
+#[allow(unused_must_use)]
+fn main() {
+    generate_gf256_table();
+    build_protobuf("src/proto", &["protobuf/version.proto"], &[]);
+    build_protobuf(
+        "src/proto/dss",
+        &[
+            "protobuf/dss/metadata.proto",
+            "protobuf/dss/secret.proto",
+            "protobuf/dss/share.proto",
+        ],
+        &["protobuf", "protobuf/dss"],
+    );
+    build_protobuf(
+        "src/proto/wrapped",
+        &[
+            "protobuf/wrapped/secret.proto",
+            "protobuf/wrapped/share.proto",
+        ],
+        &["protobuf", "protobuf/dss"],
+    );
 }
