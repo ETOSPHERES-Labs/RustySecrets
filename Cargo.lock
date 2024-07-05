@@ -205,9 +205,9 @@ checksum = "5b40af805b3121feab8a3c29f04d8ad262fa8e0561883e7653e024ae4479e6de"
 
 [[package]]
 name = "protobuf"
-version = "1.5.1"
+version = "1.7.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "40e2484e639dcae0985fc483ad76ce7ad78ee5aa092751d7d538f0b20d76486b"
+checksum = "e14ccd6b79ec748412d4f2dfde1a80fa363a67def4062969f8aed3d790a30f28"
 
 [[package]]
 name = "protobuf"
@@ -353,7 +353,7 @@ dependencies = [
  "flate2",
  "itertools",
  "merkle_sigs",
- "protobuf 1.5.1",
+ "protobuf 1.7.5",
  "quickcheck",
  "rand",
  "rand_chacha",
