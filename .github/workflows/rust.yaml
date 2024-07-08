@@ -16,6 +16,9 @@ jobs:
         with:
           components: clippy
 
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v3
+
       - name: Check
         run: cargo check --all-features
       - name: Build
