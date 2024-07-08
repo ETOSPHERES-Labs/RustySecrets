@@ -61,13 +61,12 @@ pub(crate) fn share_from_string(s: &str, is_signed: bool) -> Result<Share> {
         ErrorKind::ShareParsingError("Base64 decoding of data block failed".to_owned())
     })?;
 
-    let protobuf_data =
-        protobuf::parse_from_bytes::<ShareProto>(raw_data.as_slice()).map_err(|e| {
-            ErrorKind::ShareParsingError(format!(
-                "Protobuf decoding of data block failed with error: {} .",
-                e
-            ))
-        })?;
+    let protobuf_data = ShareProto::parse_from_bytes(raw_data.as_slice()).map_err(|e| {
+        ErrorKind::ShareParsingError(format!(
+            "Protobuf decoding of data block failed with error: {} .",
+            e
+        ))
+    })?;
 
     let data = Vec::from(protobuf_data.get_shamir_data());
 

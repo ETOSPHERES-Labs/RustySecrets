@@ -41,7 +41,7 @@ impl WrappedSecrets {
     pub fn recover_secret(shares: Vec<Share>, verify_signatures: bool) -> Result<SecretProto> {
         let secret = SSS::recover_secret(shares, verify_signatures)?;
 
-        protobuf::parse_from_bytes::<SecretProto>(secret.as_slice())
+        SecretProto::parse_from_bytes(secret.as_slice())
             .chain_err(|| ErrorKind::SecretDeserializationError)
     }
 }
