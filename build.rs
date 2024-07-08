@@ -5,6 +5,8 @@ use std::io::Write;
 use std::num::Wrapping;
 use std::path::Path;
 
+use protoc_rust::Customize;
+
 const POLY: u8 = 0x1D;
 
 /// replicates the least significant bit to every other bit
@@ -70,14 +72,17 @@ impl fmt::Display for Tables {
 }
 
 fn build_protobuf<'a>(out_dir: &'a str, input: &'a [&'a str], includes: &'a [&'a str]) {
-    use protoc_rust::{run, Args, Customize};
-    run(Args {
-        out_dir,
-        input,
-        includes,
-        customize: Customize::default(),
-    })
-    .expect(&format!("protoc error: out_dir={out_dir}, input={input:?}"));
+    std::fs::create_dir_all(out_dir).unwrap();
+    protoc_rust::Codegen::new()
+        .out_dir(out_dir)
+        .inputs(input)
+        .includes(includes)
+        .customize(Customize {
+            gen_mod_rs: Some(true),
+            ..Default::default()
+        })
+        .run()
+        .expect(&format!("protoc error: out_dir={out_dir}, input={input:?}"));
 }
 
 fn generate_gf256_table() {
@@ -103,9 +108,17 @@ fn generate_gf256_table() {
 #[allow(unused_must_use)]
 fn main() {
     generate_gf256_table();
-    build_protobuf("src/proto", &["protobuf/version.proto"], &[]);
+
+    let out_dir = env::var("OUT_DIR").unwrap();
+    let dest = Path::new(&out_dir).join("proto");
+
     build_protobuf(
-        "src/proto/dss",
+        dest.join("version").as_path().to_str().unwrap(),
+        &["protobuf/version.proto"],
+        &[],
+    );
+    build_protobuf(
+        dest.join("dss").as_path().to_str().unwrap(),
         &[
             "protobuf/dss/metadata.proto",
             "protobuf/dss/secret.proto",
@@ -114,7 +127,7 @@ fn main() {
         &["protobuf", "protobuf/dss"],
     );
     build_protobuf(
-        "src/proto/wrapped",
+        dest.join("wrapped").as_path().to_str().unwrap(),
         &[
             "protobuf/wrapped/secret.proto",
             "protobuf/wrapped/share.proto",
