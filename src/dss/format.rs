@@ -20,7 +20,7 @@ pub(crate) fn parse_share_protobuf(raw: &str) -> Result<ShareProto> {
         ErrorKind::ShareParsingError("Base64 decoding of data block failed".to_string())
     })?;
 
-    let share_proto = protobuf::parse_from_bytes::<ShareProto>(data.as_slice()).map_err(|e| {
+    let share_proto = ShareProto::parse_from_bytes(data.as_slice()).map_err(|e| {
         ErrorKind::ShareParsingError(format!(
             "Protobuf decoding of data block failed with error: {} .",
             e

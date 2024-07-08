@@ -30,7 +30,7 @@ base64      = "0.22"
 rand        = "0.8"
 ring = "0.17.8"
 merkle_sigs = { git = "https://github.com/antbern/merkle_sigs.rs" }
-protobuf    = "1.7"
+protobuf    = "=2.28"
 rand_chacha = "0.3"
 
 [dependencies.error-chain]
@@ -41,6 +41,9 @@ default-features = false
 itertools  = "0.13"
 quickcheck = "1"
 flate2     = "1"
+
+[build-dependencies]
+protoc-rust = "=2.28"
 
 [profile.bench]
 opt-level        = 3
