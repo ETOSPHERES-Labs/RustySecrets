@@ -24,7 +24,7 @@ pub(crate) fn share_to_string(
     }
 
     let proto_buf = share_protobuf.write_to_bytes().unwrap();
-    let b64_share = BASE64_CONFIG.encode(&proto_buf);
+    let b64_share = BASE64_CONFIG.encode(proto_buf);
     format!("{}-{}-{}", threshold, share_num, b64_share)
 }
 

@@ -15,7 +15,7 @@ pub(crate) fn validate_signed_shares<S: IsSignedShare>(
     let result = validate_shares(shares)?;
 
     if verify_signatures {
-        S::verify_signatures(&shares)?;
+        S::verify_signatures(shares)?;
     }
 
     Ok(result)

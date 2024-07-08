@@ -86,7 +86,7 @@ impl SSS {
             // https://github.com/rust-lang-nursery/rand/commit/230b2258dbd99ff8bd991008c972d923d4b5d10c
             rng.fill_bytes(&mut col_in[1..]);
             col_out.clear();
-            encode_secret_byte(&*col_in, shares_count, &mut col_out)?;
+            encode_secret_byte(&col_in, shares_count, &mut col_out)?;
             for (&y, share) in col_out.iter().zip(result.iter_mut()) {
                 share[c] = y;
             }
@@ -107,7 +107,7 @@ impl SSS {
             for s in shares.iter().take(threshold as usize) {
                 col_in.push((s.id, s.data[byteindex]));
             }
-            secret.push(interpolate_at(threshold, &*col_in));
+            secret.push(interpolate_at(threshold, &col_in));
         }
 
         Ok(secret)

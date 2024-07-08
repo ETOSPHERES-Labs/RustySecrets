@@ -9,14 +9,14 @@ const BASE64_CONFIG: base64::engine::general_purpose::GeneralPurpose =
 
 pub(crate) fn format_share_protobuf(share: &ShareProto) -> String {
     let bytes = share.write_to_bytes().unwrap();
-    let base64_data = BASE64_CONFIG.encode(&bytes);
+    let base64_data = BASE64_CONFIG.encode(bytes);
     format!("{}-{}-{}", share.threshold, share.id, base64_data)
 }
 
 pub(crate) fn parse_share_protobuf(raw: &str) -> Result<ShareProto> {
     let (threshold, id, base64_data) = parse_raw_share(raw)?;
 
-    let data = BASE64_CONFIG.decode(&base64_data).chain_err(|| {
+    let data = BASE64_CONFIG.decode(base64_data).chain_err(|| {
         ErrorKind::ShareParsingError("Base64 decoding of data block failed".to_string())
     })?;
 
