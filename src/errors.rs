@@ -126,7 +126,7 @@ error_chain! {
 
         InconsistentSecretLengths(id: u8, slen_: usize, ids: Vec<u8>, slen: usize) {
             description("The shares are incompatible with each other because they do not all have the same secret length.")
-            display("The share identifier {} had secret length {}, while the secret length {} was found for share identifier(s): {}.", id, slen_, slen, no_more_than_five(&ids))
+            display("The share identifier {} had secret length {}, while the secret length {} was found for share identifier(s): {}.", id, slen_, slen, no_more_than_five(ids))
         }
 
         InconsistentShares {

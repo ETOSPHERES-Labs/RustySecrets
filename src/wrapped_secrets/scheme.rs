@@ -1,7 +1,7 @@
 use crate::errors::*;
 use crate::proto::wrapped::SecretProto;
 use crate::proto::VersionProto;
-use crate::sss::SSS;
+use crate::sss::Sss;
 
 use protobuf::Message;
 use rand::Rng;
@@ -32,14 +32,14 @@ impl WrappedSecrets {
 
         let data = rusty_secret.write_to_bytes().unwrap();
 
-        SSS::default().split_secret(rng, k, n, data.as_slice(), sign_shares)
+        Sss.split_secret(rng, k, n, data.as_slice(), sign_shares)
     }
 
     /// Recovers the secret from a k-out-of-n Shamir's secret sharing.
     ///
     /// At least `k` distinct shares need to be provided to recover the share.
     pub fn recover_secret(shares: Vec<Share>, verify_signatures: bool) -> Result<SecretProto> {
-        let secret = SSS::recover_secret(shares, verify_signatures)?;
+        let secret = Sss::recover_secret(shares, verify_signatures)?;
 
         SecretProto::parse_from_bytes(secret.as_slice())
             .chain_err(|| ErrorKind::SecretDeserializationError)

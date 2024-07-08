@@ -33,7 +33,7 @@ impl Gf256 {
         Gf256 { poly: b }
     }
     #[inline]
-    pub fn to_byte(&self) -> u8 {
+    pub fn to_byte(self) -> u8 {
         self.poly
     }
     pub fn exp(power: u8) -> Gf256 {

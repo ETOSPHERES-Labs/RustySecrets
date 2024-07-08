@@ -12,7 +12,7 @@
     unused_import_braces,
     unused_qualifications
 )]
-#![cfg_attr(feature = "cargo-clippy", allow(clippy::doc_markdown))]
+#![cfg_attr(feature = "clippy", allow(clippy::doc_markdown))]
 #![recursion_limit = "1024"] // `error_chain!` can recurse deeply
 
 #[macro_use]
@@ -38,12 +38,3 @@ pub mod wrapped_secrets;
 
 #[cfg(feature = "dss")]
 pub mod dss;
-
-#[cfg(test)]
-extern crate itertools;
-
-#[cfg(test)]
-extern crate flate2;
-
-#[cfg(test)]
-extern crate quickcheck;

@@ -21,7 +21,7 @@ where
     T: SecureRandom,
 {
     fn fill(&self, dest: &mut [u8]) -> core::result::Result<(), Unspecified> {
-        <Self as SecureRandom>::fill(&self, dest)
+        <Self as SecureRandom>::fill(self, dest)
     }
 }
 

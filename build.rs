@@ -82,14 +82,14 @@ fn build_protobuf<'a>(out_dir: &'a str, input: &'a [&'a str], includes: &'a [&'a
             ..Default::default()
         })
         .run()
-        .expect(&format!("protoc error: out_dir={out_dir}, input={input:?}"));
+        .unwrap_or_else(|_| panic!("protoc error: out_dir={out_dir}, input={input:?}"));
 }
 
 fn generate_gf256_table() {
     let out_dir = env::var("OUT_DIR").unwrap();
     let dest = Path::new(&out_dir).join("nothinghardcoded.rs");
 
-    let mut f = File::create(&dest).unwrap();
+    let mut f = File::create(dest).unwrap();
 
     write!(
         f,
