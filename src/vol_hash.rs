@@ -1,10 +1,9 @@
-use std::mem::transmute;
-
 use ring::digest::{Algorithm, Context};
 
 #[allow(unsafe_code)]
 fn u32_to_bytes(x: u32) -> [u8; 4] {
-    unsafe { transmute(x.to_be()) }
+    // unsafe { transmute(x.to_be()) }
+    x.to_be().to_ne_bytes()
 }
 
 pub struct VOLHash {

@@ -13,9 +13,9 @@ use super::encode::encode_secret_byte;
 
 /// SSS provides Shamir's secret sharing with raw data.
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord)]
-pub(crate) struct SSS;
+pub(crate) struct Sss;
 
-impl SSS {
+impl Sss {
     /// Performs threshold k-out-of-n Shamir's secret sharing.
     pub fn split_secret<R: Rng>(
         &self,

@@ -8,6 +8,7 @@ use crate::errors::*;
 pub(crate) mod validation;
 
 /// All types of share should implement this trait.
+#[allow(dead_code)]
 pub(crate) trait IsShare: Sized {
     /// Returns the identifier of the share.
     /// Varies between 1 and n where n is the total number of generated shares.
@@ -24,6 +25,7 @@ pub(crate) trait IsShare: Sized {
 }
 
 /// This trait must be implemented by shares' types wich can be signed.
+#[allow(dead_code)]
 pub(crate) trait IsSignedShare: IsShare {
     /// The type of shares' sigature.
     type Signature;
