@@ -133,7 +133,7 @@ dependencies = [
 [[package]]
 name = "lamport_sigs"
 version = "0.7.1-pre"
-source = "git+https://github.com/antbern/lamport_sigs.rs#d0bdc1032f87f8210a61e337fb6742a07c1ce6ff"
+source = "git+https://github.com/ETO-GRUPPE-TECHNOLOGIES-GmbH/lamport_sigs.rs#d0bdc1032f87f8210a61e337fb6742a07c1ce6ff"
 dependencies = [
  "ring",
 ]
@@ -165,7 +165,7 @@ checksum = "78ca9ab1a0babb1e7d5695e3530886289c18cf2f87ec19a575a0abdce112e3a3"
 [[package]]
 name = "merkle"
 version = "1.11.1-pre"
-source = "git+https://github.com/antbern/merkle.rs#567c8c3bfd8be23131ecc7ce22c48ba861a64692"
+source = "git+https://github.com/ETO-GRUPPE-TECHNOLOGIES-GmbH/merkle.rs#567c8c3bfd8be23131ecc7ce22c48ba861a64692"
 dependencies = [
  "protobuf",
  "protoc-rust",
@@ -175,7 +175,7 @@ dependencies = [
 [[package]]
 name = "merkle_sigs"
 version = "1.7.1-pre"
-source = "git+https://github.com/antbern/merkle_sigs.rs#1039683e934f52174f3678406eea3397e26b406f"
+source = "git+https://github.com/ETO-GRUPPE-TECHNOLOGIES-GmbH/merkle_sigs.rs#d9776b4db0ff698e75c0a998816099b97d4fc490"
 dependencies = [
  "lamport_sigs",
  "merkle",
