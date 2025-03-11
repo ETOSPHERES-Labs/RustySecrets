@@ -12,17 +12,11 @@
     unused_import_braces,
     unused_qualifications
 )]
-#![cfg_attr(feature = "clippy", allow(clippy::doc_markdown))]
+#![allow(clippy::doc_markdown)]
 #![recursion_limit = "1024"] // `error_chain!` can recurse deeply
 
 #[macro_use]
 extern crate error_chain;
-
-extern crate base64;
-extern crate merkle_sigs;
-extern crate protobuf;
-extern crate rand;
-extern crate ring;
 
 #[macro_use]
 mod gf256;

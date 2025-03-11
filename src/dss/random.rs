@@ -6,7 +6,7 @@ use ring::rand::SecureRandom;
 /// We bound the message size at about 16MB to avoid overflow in `random_bytes_count`.
 /// Moreover, given the current performances, it is almost unpractical to run
 /// the sharing scheme on message larger than that.
-pub(crate) const MAX_MESSAGE_SIZE: usize = std::usize::MAX / (std::u8::MAX - 1) as usize;
+pub(crate) const MAX_MESSAGE_SIZE: usize = usize::MAX / (u8::MAX - 1) as usize;
 /// Minimum allowed message size in bytes
 pub(crate) static MIN_MESSAGE_SIZE: usize = 1;
 

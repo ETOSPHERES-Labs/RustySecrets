@@ -4,7 +4,7 @@ use crate::sss::{Share, HASH_ALGO};
 
 use base64::Engine;
 use merkle_sigs::{MerklePublicKey, Proof, PublicKey};
-use protobuf::{self, Message, RepeatedField};
+use prost::Message;
 
 const BASE64_CONFIG: base64::engine::general_purpose::GeneralPurpose =
     base64::engine::general_purpose::STANDARD_NO_PAD;
@@ -15,15 +15,21 @@ pub(crate) fn share_to_string(
     share_num: u8,
     signature_pair: Option<(Vec<Vec<u8>>, Proof<MerklePublicKey>)>,
 ) -> String {
-    let mut share_protobuf = ShareProto::new();
-    share_protobuf.set_shamir_data(share);
+    let mut share_protobuf = ShareProto {
+        shamir_data: share,
+        ..Default::default()
+    };
 
     if let Some((signature, proof)) = signature_pair {
-        share_protobuf.set_signature(RepeatedField::from_vec(signature));
-        share_protobuf.set_proof(proof.write_to_bytes().unwrap());
+        share_protobuf.signature = signature;
+        share_protobuf.proof = proof.write_to_bytes().unwrap();
     }
 
-    let proto_buf = share_protobuf.write_to_bytes().unwrap();
+    let mut buf = Vec::with_capacity(share_protobuf.encoded_len());
+    // Unwrap is safe, since we have reserved sufficient capacity in the vector.
+    share_protobuf.encode(&mut buf).unwrap();
+
+    let proto_buf = buf;
     let b64_share = BASE64_CONFIG.encode(proto_buf);
     format!("{}-{}-{}", threshold, share_num, b64_share)
 }
@@ -61,17 +67,17 @@ pub(crate) fn share_from_string(s: &str, is_signed: bool) -> Result<Share> {
         ErrorKind::ShareParsingError("Base64 decoding of data block failed".to_owned())
     })?;
 
-    let protobuf_data = ShareProto::parse_from_bytes(raw_data.as_slice()).map_err(|e| {
+    let protobuf_data = ShareProto::decode(raw_data.as_slice()).map_err(|e| {
         ErrorKind::ShareParsingError(format!(
             "Protobuf decoding of data block failed with error: {} .",
             e
         ))
     })?;
 
-    let data = Vec::from(protobuf_data.get_shamir_data());
+    let data = protobuf_data.shamir_data;
 
     let signature_pair = if is_signed {
-        let p_result = Proof::parse_from_bytes(protobuf_data.get_proof(), HASH_ALGO);
+        let p_result = Proof::parse_from_bytes(&protobuf_data.proof, HASH_ALGO);
 
         let p_opt = p_result.unwrap();
         let p = p_opt.unwrap();
@@ -83,8 +89,8 @@ pub(crate) fn share_from_string(s: &str, is_signed: bool) -> Result<Share> {
             value: MerklePublicKey::new(PublicKey::from_vec(p.value, HASH_ALGO).unwrap()),
         };
 
-        let signature = protobuf_data.get_signature();
-        Some((Vec::from(signature), proof).into())
+        let signature = protobuf_data.signature;
+        Some((signature, proof).into())
     } else {
         None
     };

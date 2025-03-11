@@ -3,7 +3,7 @@ use crate::proto::wrapped::SecretProto;
 use crate::proto::VersionProto;
 use crate::sss::Sss;
 
-use protobuf::Message;
+use prost::Message;
 use rand::Rng;
 
 pub(crate) use crate::sss::Share;
@@ -22,17 +22,19 @@ impl WrappedSecrets {
         mime_type: Option<String>,
         sign_shares: bool,
     ) -> Result<Vec<Share>> {
-        let mut rusty_secret = SecretProto::new();
-        rusty_secret.set_version(VersionProto::INITIAL_RELEASE);
-        rusty_secret.set_secret(secret.to_owned());
+        let mut rusty_secret = SecretProto::default();
+        rusty_secret.set_version(VersionProto::InitialRelease);
+        rusty_secret.secret = secret.to_owned();
 
         if let Some(mt) = mime_type {
-            rusty_secret.set_mime_type(mt);
+            rusty_secret.mime_type = mt;
         }
 
-        let data = rusty_secret.write_to_bytes().unwrap();
+        let mut buf = Vec::with_capacity(rusty_secret.encoded_len());
+        // Unwrap is safe, since we have reserved sufficient capacity in the vector.
+        rusty_secret.encode(&mut buf).unwrap();
 
-        Sss.split_secret(rng, k, n, data.as_slice(), sign_shares)
+        Sss.split_secret(rng, k, n, buf.as_slice(), sign_shares)
     }
 
     /// Recovers the secret from a k-out-of-n Shamir's secret sharing.
@@ -41,7 +43,6 @@ impl WrappedSecrets {
     pub fn recover_secret(shares: Vec<Share>, verify_signatures: bool) -> Result<SecretProto> {
         let secret = Sss::recover_secret(shares, verify_signatures)?;
 
-        SecretProto::parse_from_bytes(secret.as_slice())
-            .chain_err(|| ErrorKind::SecretDeserializationError)
+        SecretProto::decode(secret.as_slice()).chain_err(|| ErrorKind::SecretDeserializationError)
     }
 }

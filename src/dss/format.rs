@@ -1,5 +1,5 @@
 use base64::Engine;
-use protobuf::{self, Message};
+use prost::Message;
 
 use crate::errors::*;
 use crate::proto::dss::ShareProto;
@@ -8,8 +8,10 @@ const BASE64_CONFIG: base64::engine::general_purpose::GeneralPurpose =
     base64::engine::general_purpose::STANDARD_NO_PAD;
 
 pub(crate) fn format_share_protobuf(share: &ShareProto) -> String {
-    let bytes = share.write_to_bytes().unwrap();
-    let base64_data = BASE64_CONFIG.encode(bytes);
+    let mut buf = Vec::with_capacity(share.encoded_len());
+    // Unwrap is safe, since we have reserved sufficient capacity in the vector.
+    share.encode(&mut buf).unwrap();
+    let base64_data = BASE64_CONFIG.encode(buf);
     format!("{}-{}-{}", share.threshold, share.id, base64_data)
 }
 
@@ -20,7 +22,7 @@ pub(crate) fn parse_share_protobuf(raw: &str) -> Result<ShareProto> {
         ErrorKind::ShareParsingError("Base64 decoding of data block failed".to_string())
     })?;
 
-    let share_proto = ShareProto::parse_from_bytes(data.as_slice()).map_err(|e| {
+    let share_proto = ShareProto::decode(data.as_slice()).map_err(|e| {
         ErrorKind::ShareParsingError(format!(
             "Protobuf decoding of data block failed with error: {} .",
             e

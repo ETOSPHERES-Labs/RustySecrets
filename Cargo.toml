@@ -30,7 +30,7 @@ base64      = "0.22"
 rand        = "0.8"
 ring = "0.17.8"
 merkle_sigs = { git = "https://github.com/ETO-GRUPPE-TECHNOLOGIES-GmbH/merkle_sigs.rs" }
-protobuf    = "=2.28"
+prost = "0.13"
 rand_chacha = "0.3"
 
 [dependencies.error-chain]
@@ -43,7 +43,7 @@ quickcheck = "1"
 flate2     = "1"
 
 [build-dependencies]
-protoc-rust = "=2.28"
+prost-build = "0.13"
 
 [profile.bench]
 opt-level        = 3
@@ -70,3 +70,8 @@ tag-prefix                  = "v"
 tag-message                 = "Release version {{version}}."
 doc-commit-message          = "Update documentation."
 dev-version-ext             = "pre"
+
+[lints.rust]
+# emitted by error_chain! macro which is no longer maintained, silence the warning
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(has_error_description_deprecated)'] }
+
