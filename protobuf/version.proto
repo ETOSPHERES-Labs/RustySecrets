@@ -1,5 +1,6 @@
-
 syntax = "proto3";
+
+package version;
 
 enum VersionProto {
   INITIAL_RELEASE = 0;

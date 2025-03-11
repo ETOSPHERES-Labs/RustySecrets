@@ -25,7 +25,7 @@ impl VOLHash {
 
     pub fn finish(self, dest: &mut [u8]) {
         let len = dest.len();
-        assert!(len < std::u32::MAX as usize);
+        assert!(len < u32::MAX as usize);
 
         let mut ctx = Context::new(self.algorithm);
         ctx.update(&[0u8]);

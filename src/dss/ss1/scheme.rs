@@ -226,7 +226,7 @@ impl SS1 {
         let mut ctx = Context::new(&SHA256);
         ctx.update(preseed);
         ctx.update(secret);
-        for md in metadata {
+        if let Some(md) = metadata {
             md.hash_into(&mut ctx);
         }
         let preseed_hash = ctx.finish();

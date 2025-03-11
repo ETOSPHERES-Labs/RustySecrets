@@ -10,17 +10,13 @@ pub(crate) fn share_to_string(share: Share) -> String {
 }
 
 pub(crate) fn share_from_string(raw: &str) -> Result<Share> {
-    let mut proto = parse_share_protobuf(raw)?;
+    let proto = parse_share_protobuf(raw)?;
 
-    let metadata_proto = if proto.has_meta_data() {
-        Some(metadata_from_proto(proto.take_meta_data()))
-    } else {
-        None
-    };
+    let metadata_proto = proto.meta_data.map(metadata_from_proto);
 
-    let i = proto.get_id() as u8;
-    let k = proto.get_threshold() as u8;
-    let n = proto.get_shares_count() as u8;
+    let i = proto.id as u8;
+    let k = proto.threshold as u8;
+    let n = proto.shares_count as u8;
 
     if k < 1 || i < 1 {
         bail! {
@@ -42,7 +38,7 @@ pub(crate) fn share_from_string(raw: &str) -> Result<Share> {
         id: i,
         threshold: k,
         shares_count: n,
-        data: proto.take_data(),
+        data: proto.data,
         metadata: metadata_proto,
     };
 
@@ -50,29 +46,24 @@ pub(crate) fn share_from_string(raw: &str) -> Result<Share> {
 }
 
 pub(crate) fn share_to_protobuf(share: Share) -> ShareProto {
-    let mut proto = ShareProto::new();
-
-    proto.set_id(share.id.into());
-    proto.set_threshold(share.threshold.into());
-    proto.set_shares_count(share.shares_count.into());
-    proto.set_data(share.data);
-
-    if let Some(meta_data) = share.metadata {
-        let metadata_proto = metadata_to_proto(meta_data);
-        proto.set_meta_data(metadata_proto);
+    ShareProto {
+        id: share.id.into(),
+        threshold: share.threshold.into(),
+        shares_count: share.shares_count.into(),
+        data: share.data,
+        hash: Vec::new(),
+        meta_data: share.metadata.map(metadata_to_proto),
     }
-
-    proto
 }
 
 fn metadata_to_proto(meta_data: MetaData) -> MetaDataProto {
-    let mut proto = MetaDataProto::new();
-    proto.set_tags(btreemap_to_hashmap(meta_data.tags));
-    proto
+    MetaDataProto {
+        tags: btreemap_to_hashmap(meta_data.tags),
+    }
 }
 
-fn metadata_from_proto(mut proto: MetaDataProto) -> MetaData {
+fn metadata_from_proto(proto: MetaDataProto) -> MetaData {
     MetaData {
-        tags: hashmap_to_btreemap(proto.take_tags()),
+        tags: hashmap_to_btreemap(proto.tags),
     }
 }

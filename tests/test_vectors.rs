@@ -1,9 +1,5 @@
-extern crate base64;
-extern crate protobuf;
-extern crate rusty_secrets;
-
 use base64::Engine;
-use protobuf::Message;
+use prost::Message;
 
 use rusty_secrets::proto::wrapped::ShareProto;
 use rusty_secrets::sss::recover_secret;
@@ -15,10 +11,15 @@ pub fn wrap_from_sellibitze(share: &str) -> String {
     let parts: Vec<_> = share.trim().split('-').collect();
     let share_data = BASE64_CONFIG.decode(parts[2]).unwrap();
 
-    let mut share_protobuf = ShareProto::new();
-    share_protobuf.set_shamir_data(share_data);
+    let mut share_protobuf = ShareProto::default();
+    share_protobuf.shamir_data = share_data;
 
-    let b64_share = BASE64_CONFIG.encode(share_protobuf.write_to_bytes().unwrap());
+    let mut buf = Vec::new();
+    buf.reserve(share_protobuf.encoded_len());
+    // Unwrap is safe, since we have reserved sufficient capacity in the vector.
+    share_protobuf.encode(&mut buf).unwrap();
+
+    let b64_share = BASE64_CONFIG.encode(buf);
 
     format!("{}-{}-{}", parts[0], parts[1], b64_share)
 }
