@@ -3,7 +3,7 @@
 use crate::errors::*;
 use crate::proto::wrapped::SecretProto;
 
-use rand::{rngs::OsRng, Rng};
+use rand::Rng;
 
 mod scheme;
 pub(crate) use self::scheme::*;
@@ -45,7 +45,7 @@ pub fn split_secret(
     sign_shares: bool,
 ) -> Result<Vec<String>> {
     WrappedSecrets
-        .split_secret(&mut OsRng, k, n, secret, mime_type, sign_shares)
+        .split_secret(&mut rand::rng(), k, n, secret, mime_type, sign_shares)
         .map(|shares| shares.into_iter().map(Share::into_string).collect())
 }
 

@@ -13,7 +13,7 @@ pub(crate) use self::scheme::*;
 
 mod encode;
 
-use rand::{rngs::OsRng, Rng};
+use rand::Rng;
 use ring::digest::{Algorithm, SHA512};
 
 static HASH_ALGO: &Algorithm = &SHA512;
@@ -40,7 +40,7 @@ static HASH_ALGO: &Algorithm = &SHA512;
 /// }
 /// ```
 pub fn split_secret(k: u8, n: u8, secret: &[u8], sign_shares: bool) -> Result<Vec<String>> {
-    Sss.split_secret(&mut OsRng, k, n, secret, sign_shares)
+    Sss.split_secret(&mut rand::rng(), k, n, secret, sign_shares)
         .map(|shares| shares.into_iter().map(Share::into_string).collect())
 }
 

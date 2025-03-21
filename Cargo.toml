@@ -27,11 +27,11 @@ dss     = []
 
 [dependencies]
 base64      = "0.22"
-rand        = "0.8"
+rand        = "0.9"
 ring = "0.17.8"
 merkle_sigs = { git = "https://github.com/ETO-GRUPPE-TECHNOLOGIES-GmbH/merkle_sigs.rs" }
 prost = "0.13"
-rand_chacha = "0.3"
+rand_chacha = "0.9"
 
 [dependencies.error-chain]
 version          = "0.12.0"
