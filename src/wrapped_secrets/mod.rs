@@ -15,7 +15,7 @@ pub(crate) use self::scheme::*;
 /// # Examples
 ///
 /// ```
-/// use rusty_secrets::wrapped_secrets::split_secret;
+/// use etospheres_labs_rusty_secrets::wrapped_secrets::split_secret;
 ///
 /// let secret = "These programs were never about terrorism: they’re about economic spying, \
 ///               social control, and diplomatic manipulation. They’re about power.";
@@ -54,11 +54,11 @@ pub fn split_secret(
 /// # Examples
 ///
 /// ```
-/// # extern crate rusty_secrets;
+/// # extern crate etospheres_labs_rusty_secrets;
 /// # extern crate rand_chacha;
 /// #
 /// # fn main() {
-/// use rusty_secrets::wrapped_secrets::split_secret_rng;
+/// use etospheres_labs_rusty_secrets::wrapped_secrets::split_secret_rng;
 /// use rand_chacha::ChaChaRng;
 /// use rand_chacha::rand_core::SeedableRng;
 ///
@@ -107,7 +107,7 @@ pub fn split_secret_rng<R: Rng>(
 /// # Examples
 ///
 /// ```rust
-/// use rusty_secrets::wrapped_secrets::recover_secret;
+/// use etospheres_labs_rusty_secrets::wrapped_secrets::recover_secret;
 ///
 /// let share1 = "2-1-Cha7s14Q/mSwWko0ittr+/Uf79RHQMIP".to_string();
 /// let share2 = "2-4-ChaydsUJDypD9ZWxwvIICh/cmZvzusOF".to_string();

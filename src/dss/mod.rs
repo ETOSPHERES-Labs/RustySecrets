@@ -42,7 +42,7 @@ mod utils;
 /// recover the secret, one would express it as:
 ///
 /// ```rust
-/// # use rusty_secrets::dss::AccessStructure;
+/// # use etospheres_labs_rusty_secrets::dss::AccessStructure;
 /// AccessStructure {
 ///     threshold: 7,
 ///     shares_count: 10,

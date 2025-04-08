@@ -1,6 +1,4 @@
-extern crate rusty_secrets;
-
-use rusty_secrets::sss;
+use etospheres_labs_rusty_secrets::sss;
 
 #[test]
 #[should_panic(expected = "ThresholdTooBig")]

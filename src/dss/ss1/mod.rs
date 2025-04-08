@@ -1,7 +1,7 @@
 //! Implements the `SS1` deterministic threshold secret sharing scheme.
 //!
 //! This scheme is implemented as the *T2 transform* over the ThSS threshold sharing scheme.
-//! found in the `rusty_secrets::dss::thss` module.
+//! found in the `etospheres_labs_rusty_secrets::dss::thss` module.
 //!
 //! # Security properties
 //!
@@ -39,7 +39,7 @@ use crate::dss::AccessStructure;
 /// # Examples
 ///
 /// ```
-/// use rusty_secrets::dss::ss1::{self, Reproducibility, MetaData};
+/// use etospheres_labs_rusty_secrets::dss::ss1::{self, Reproducibility, MetaData};
 ///
 /// let secret = "These programs were never about terrorism: they’re about economic spying, \
 ///               social control, and diplomatic manipulation. They’re about power.";
@@ -73,7 +73,7 @@ pub fn split_secret(
 /// # Examples
 ///
 /// ```rust
-/// use rusty_secrets::dss::ss1::{self, Reproducibility, MetaData};
+/// use etospheres_labs_rusty_secrets::dss::ss1::{self, Reproducibility, MetaData};
 ///
 /// let secret = "These programs were never about terrorism: they’re about economic spying, \
 ///               social control, and diplomatic manipulation. They’re about power.";

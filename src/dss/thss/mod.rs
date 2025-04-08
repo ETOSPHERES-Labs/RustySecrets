@@ -30,7 +30,7 @@ use crate::dss::AccessStructure;
 /// # Examples
 ///
 /// ```rust
-/// use rusty_secrets::dss::thss;
+/// use etospheres_labs_rusty_secrets::dss::thss;
 ///
 /// let secret = "These programs were never about terrorism: they’re about economic spying, \
 ///               social control, and diplomatic manipulation. They’re about power.";
@@ -71,7 +71,7 @@ pub fn split_secret(
 /// # Examples
 ///
 /// ```rust
-/// use rusty_secrets::dss::thss;
+/// use etospheres_labs_rusty_secrets::dss::thss;
 ///
 /// let secret = "These programs were never about terrorism: they’re about economic spying, \
 ///               social control, and diplomatic manipulation. They’re about power.";
