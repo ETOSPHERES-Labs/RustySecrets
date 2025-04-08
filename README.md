@@ -5,6 +5,8 @@
 [![Crates.io](https://img.shields.io/crates/v/rusty_secrets.svg)](https://crates.io/crates/rusty_secrets)
 [![LICENSE](https://img.shields.io/crates/l/rusty_secrets.svg)](https://github.com/SpinResearch/RustySecrets/blob/master/LICENSE)
 
+> Note: This is a fork of the [original `RustySecrets` crate](https://crates.io/crates/RustySecrets)
+
 > Rusty Secrets is an implementation of a threshold [Shamir's secret sharing scheme](https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing).
 
 [**Documentation (latest)**](https://docs.rs/rusty_secrets/)  
