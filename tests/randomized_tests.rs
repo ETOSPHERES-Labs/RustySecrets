@@ -1,6 +1,4 @@
-extern crate rusty_secrets;
-
-use rusty_secrets::wrapped_secrets;
+use etospheres_labs_rusty_secrets::wrapped_secrets;
 
 #[ignore]
 #[test]

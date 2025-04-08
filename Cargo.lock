@@ -104,6 +104,54 @@ dependencies = [
 ]
 
 [[package]]
+name = "etospheres-labs-lamport_sigs"
+version = "0.7.1-pre"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2d9d4e09c2d00087cb7137858455a982b7890bd3ea17e9ed800c28c52ffd27d8"
+dependencies = [
+ "ring",
+]
+
+[[package]]
+name = "etospheres-labs-merkle"
+version = "1.11.1-pre"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6948ceeb1d71d2c5ed9b1040fbd59c8c74bb6e3f92c729993bbcd26301c5e21b"
+dependencies = [
+ "prost",
+ "prost-build",
+ "ring",
+]
+
+[[package]]
+name = "etospheres-labs-merkle_sigs"
+version = "1.7.1-pre"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ba561cd85584e6eb757dba89da5d221fc2061fcfffc74d2786804a8d6df6320f"
+dependencies = [
+ "etospheres-labs-lamport_sigs",
+ "etospheres-labs-merkle",
+ "ring",
+]
+
+[[package]]
+name = "etospheres-labs-rusty_secrets"
+version = "0.2.3-pre"
+dependencies = [
+ "base64",
+ "error-chain",
+ "etospheres-labs-merkle_sigs",
+ "flate2",
+ "itertools",
+ "prost",
+ "prost-build",
+ "quickcheck",
+ "rand 0.9.0",
+ "rand_chacha",
+ "ring",
+]
+
+[[package]]
 name = "fastrand"
 version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -172,28 +220,11 @@ dependencies = [
 
 [[package]]
 name = "itertools"
-version = "0.13.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "413ee7dfc52ee1a4949ceeb7dbc8a33f2d6c088194d9f922fb8318faf1f01186"
-dependencies = [
- "either",
-]
-
-[[package]]
-name = "itertools"
 version = "0.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2b192c782037fadd9cfa75548310488aabdbf3d2da73885b31bd0abd03351285"
 dependencies = [
  "either",
-]
-
-[[package]]
-name = "lamport_sigs"
-version = "0.7.1-pre"
-source = "git+https://github.com/ETO-GRUPPE-TECHNOLOGIES-GmbH/lamport_sigs.rs#d0bdc1032f87f8210a61e337fb6742a07c1ce6ff"
-dependencies = [
- "ring",
 ]
 
 [[package]]
@@ -219,26 +250,6 @@ name = "memchr"
 version = "2.7.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "78ca9ab1a0babb1e7d5695e3530886289c18cf2f87ec19a575a0abdce112e3a3"
-
-[[package]]
-name = "merkle"
-version = "1.11.1-pre"
-source = "git+https://github.com/ETO-GRUPPE-TECHNOLOGIES-GmbH/merkle.rs#455be0c4f5e7518792f86e4cbd16eff77914c8f8"
-dependencies = [
- "prost",
- "prost-build",
- "ring",
-]
-
-[[package]]
-name = "merkle_sigs"
-version = "1.7.1-pre"
-source = "git+https://github.com/ETO-GRUPPE-TECHNOLOGIES-GmbH/merkle_sigs.rs#d9776b4db0ff698e75c0a998816099b97d4fc490"
-dependencies = [
- "lamport_sigs",
- "merkle",
- "ring",
-]
 
 [[package]]
 name = "miniz_oxide"
@@ -313,7 +324,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "be769465445e8c1474e9c5dac2018218498557af32d9ed057325ec9a41ae81bf"
 dependencies = [
  "heck",
- "itertools 0.13.0",
+ "itertools",
  "log",
  "multimap",
  "once_cell",
@@ -333,7 +344,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8a56d757972c98b346a9b766e3f02746cde6dd1cd1d1d563472929fdd74bec4d"
 dependencies = [
  "anyhow",
- "itertools 0.13.0",
+ "itertools",
  "proc-macro2",
  "quote",
  "syn",
@@ -477,23 +488,6 @@ dependencies = [
  "libc",
  "linux-raw-sys",
  "windows-sys",
-]
-
-[[package]]
-name = "rusty_secrets"
-version = "0.2.3-pre"
-dependencies = [
- "base64",
- "error-chain",
- "flate2",
- "itertools 0.14.0",
- "merkle_sigs",
- "prost",
- "prost-build",
- "quickcheck",
- "rand 0.9.0",
- "rand_chacha",
- "ring",
 ]
 
 [[package]]

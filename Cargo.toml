@@ -1,5 +1,5 @@
 [package]
-name    = "rusty_secrets"
+name    = "etospheres-labs-rusty_secrets"
 version = "0.2.3-pre"
 authors = [
   "Frederic Jacobs <github@fredericjacobs.com>",
@@ -10,7 +10,8 @@ authors = [
 ]
 
 description = "Implementation of threshold Shamir's secret sharing in the Rust programming language."
-homepage    = "https://github.com/freedomofpress/RustySecrets"
+homepage    = "https://github.com/ETOSPHERES-Labs/RustySecrets"
+repository  = "https://github.com/ETOSPHERES-Labs/RustySecrets"
 license     = "BSD-3-Clause"
 readme      = "README.md"
 build       = "build.rs"
@@ -29,7 +30,7 @@ dss     = []
 base64      = "0.22"
 rand        = "0.9"
 ring = "0.17.8"
-merkle_sigs = { git = "https://github.com/ETO-GRUPPE-TECHNOLOGIES-GmbH/merkle_sigs.rs" }
+merkle_sigs = { version = "1.7.1-pre", package = "etospheres-labs-merkle_sigs" }
 prost = "0.13"
 rand_chacha = "0.9"
 

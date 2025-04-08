@@ -25,7 +25,7 @@ static HASH_ALGO: &Algorithm = &SHA512;
 /// # Examples
 ///
 /// ```
-/// use rusty_secrets::sss::split_secret;
+/// use etospheres_labs_rusty_secrets::sss::split_secret;
 ///
 /// let secret = "These programs were never about terrorism: they’re about economic spying, \
 ///               social control, and diplomatic manipulation. They’re about power.";
@@ -49,7 +49,7 @@ pub fn split_secret(k: u8, n: u8, secret: &[u8], sign_shares: bool) -> Result<Ve
 /// # Examples
 ///
 /// ```
-/// # extern crate rusty_secrets;
+/// # extern crate etospheres_labs_rusty_secrets;
 /// # extern crate rand_chacha;
 /// #
 /// # use rand_chacha::ChaChaRng;
@@ -61,7 +61,7 @@ pub fn split_secret(k: u8, n: u8, secret: &[u8], sign_shares: bool) -> Result<Ve
 /// # }
 /// #
 /// # fn main() {
-/// use rusty_secrets::sss::split_secret_rng;
+/// use etospheres_labs_rusty_secrets::sss::split_secret_rng;
 ///
 /// let secret = "These programs were never about terrorism: they’re about economic spying, \
 ///               social control, and diplomatic manipulation. They’re about power.";
@@ -96,7 +96,7 @@ pub fn split_secret_rng<R: Rng>(
 /// # Examples
 ///
 /// ```
-/// use rusty_secrets::sss::recover_secret;
+/// use etospheres_labs_rusty_secrets::sss::recover_secret;
 ///
 /// let share1 = "2-1-Cha7s14Q/mSwWko0ittr+/Uf79RHQMIP".to_string();
 /// let share2 = "2-4-ChaydsUJDypD9ZWxwvIICh/cmZvzusOF".to_string();

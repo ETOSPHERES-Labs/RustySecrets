@@ -1,8 +1,8 @@
 use base64::Engine;
 use prost::Message;
 
-use rusty_secrets::proto::wrapped::ShareProto;
-use rusty_secrets::sss::recover_secret;
+use etospheres_labs_rusty_secrets::proto::wrapped::ShareProto;
+use etospheres_labs_rusty_secrets::sss::recover_secret;
 
 const BASE64_CONFIG: base64::engine::general_purpose::GeneralPurpose =
     base64::engine::general_purpose::STANDARD_NO_PAD;
